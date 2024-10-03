@@ -70,7 +70,7 @@ const QuizPage = () => {
       />
 
       <motion.div
-        className="absolute left-16 text-green-600 font-extrabold text-9xl z-0 transform -rotate-12"
+        className="absolute bebas-neue-regular left-16 text-green-600 text-9xl z-0 transform "
         style={{
           opacity: dragOpacity.agree,
           textShadow: "-3px 3px 10px rgba(0, 0, 0, 0.5)"
@@ -80,7 +80,7 @@ const QuizPage = () => {
       </motion.div>
 
       <motion.div
-        className="absolute right-16 text-red-600 font-extrabold text-9xl z-0 transform rotate-12"
+        className="absolute bebas-neue-regular right-16 text-red-600 text-9xl z-0 transform"
         style={{
           opacity: dragOpacity.disagree,
           textShadow: "3px 3px 10px rgba(0, 0, 0, 0.5)"
@@ -89,7 +89,7 @@ const QuizPage = () => {
         Disagree
       </motion.div>
 
-      <div className="relative w-full max-w-xl h-full flex flex-col items-center z-10">
+      <div className="relative w-full max-w-xl h-full flex flex-col items-center z-10 top-85px">
         <motion.div
           ref={cardRef}
           key={currentQuestionIndex}
@@ -106,8 +106,8 @@ const QuizPage = () => {
             boxShadow: "0px 15px 25px rgba(0, 0, 0, 0.2)"
           }}
         >
-          <p className="text-black text-center text-lg font-bold mb-4">Question {currentQuestionIndex + 1}</p>
-          <h2 className="text-2xl font-extrabold text-gray-800 text-center mb-6">{questions[currentQuestionIndex].question}</h2>
+          <p className="text-black text-center text-xl font-bold mb-4 bebas-neue-regular">Question {currentQuestionIndex + 1}</p>
+          <h2 className="text-2xl font-extrabold text-gray-800 text-center mb-6 barlow-condensed-regular">{questions[currentQuestionIndex].question}</h2>
         </motion.div>
       </div>
     </div>
