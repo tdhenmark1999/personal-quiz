@@ -110,6 +110,9 @@ const QuizPage = () => {
           <h2 className="text-2xl font-extrabold text-gray-800 text-center mb-6 barlow-condensed-regular">{questions[currentQuestionIndex].question}</h2>
         </motion.div>
       </div>
+      <div className="absolute bottom-10 text-center text-lg font-bold text-gray-700 bebas-neue-regular">
+        <p>Swipe left to Agree or right to Disagree</p>
+      </div>
     </div>
   );
 };
