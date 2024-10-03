@@ -32,11 +32,19 @@ const ResultsPage = () => {
   const analyzeResults = (answers: Result[]) => {
     const agreeCount = answers.filter(answer => answer.selectedOption === "Agree").length;
     const disagreeCount = answers.filter(answer => answer.selectedOption === "Disagree").length;
-
+  
     if (agreeCount > disagreeCount) {
-      setPersonalityType("You tend to be more social and outgoing. You thrive in social situations and enjoy engaging with others.");
+      if (agreeCount > 7) {
+        setPersonalityType("You are highly extroverted and thrive in social situations. You enjoy engaging with others and often take the lead in group activities.");
+      } else {
+        setPersonalityType("You tend to be social and outgoing. You thrive in social situations and enjoy engaging with others.");
+      }
     } else {
-      setPersonalityType("You prefer introspection and careful planning. You may enjoy solitary activities and value thoughtful decision-making.");
+      if (disagreeCount > 7) {
+        setPersonalityType("You are highly introverted and prefer solitary activities. You value deep thought and often take your time to make decisions.");
+      } else {
+        setPersonalityType("You prefer introspection and careful planning. You may enjoy solitary activities and value thoughtful decision-making.");
+      }
     }
   };
 
