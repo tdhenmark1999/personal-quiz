@@ -18,7 +18,7 @@ const QuizPage = () => {
     const threshold = cardWidth * 0.5;
 
     if (Math.abs(info.offset.x) > threshold) {
-      handleOptionClick(info.offset.x > 0 ? "Agree" : "Disagree");
+      handleOptionClick(info.offset.x > 0 ? "Disagree" : "Agree");
     } else {
       setCurrentColor({ from: '#bfdbfe', to: '#d8b4fe' });
       setDragOpacity({ agree: 0, disagree: 0 });
