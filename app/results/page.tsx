@@ -77,7 +77,10 @@ const ResultsPage = () => {
           ))}
         </div>
         <motion.button
-          onClick={() => router.push("/")}
+           onClick={() => {
+            sessionStorage.setItem("quizAnswers", JSON.stringify([]));
+            router.push("/");
+          }}
           className="mt-8 px-6 py-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-transform transform hover:scale-105"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

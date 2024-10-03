@@ -19,7 +19,7 @@ const HomePage = () => {
         <p className="text-gray-600 mb-6">
           Discover your personality type in just a few steps.
         </p>
-        <Link href="/quiz">
+        <Link href="/quiz" onClick={() => sessionStorage.setItem("quizAnswers", JSON.stringify([]))}>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
