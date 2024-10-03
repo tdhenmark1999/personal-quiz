@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { questions } from './../data/questions'; 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
 type Result = {
   question: string;
@@ -48,6 +51,16 @@ const ResultsPage = () => {
     }
   };
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-200 to-purple-300 p-6">
       <motion.div
@@ -56,26 +69,28 @@ const ResultsPage = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="bg-white p-8 rounded-lg shadow-lg max-w-xl w-full text-center"
       >
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Your Quiz Results</h1>
-        <p className="text-xl font-medium mb-4 text-gray-800">{personalityType}</p>
-        <div className="space-y-4">
-          {results.map((answer, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="bg-gray-100 rounded-md p-4 text-gray-800 shadow-sm"
-            >
-              <p className="font-medium">
-                Q{index + 1}: {answer.question}
-              </p>
-              <p className="text-blue-500 font-semibold mt-1">
-                Your Answer: {answer.selectedOption}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+        <h1 className="text-3xl font-bold text-gray-800 mb-3 bebas-neue-regular">Your Quiz Results</h1>
+        <p className="text-xl font-medium mb-4 text-gray-800 barlow-condensed-regular-italic mb-6">"{personalityType}"</p>
+        <div className="mb-6 question-container">
+            <Slider {...settings}>
+            {results.map((answer, index) => (
+                <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="bg-gray-100 rounded-md p-4 text-gray-800 text-left shadow-sm"
+                >
+                <p className="barlow-condensed-medium">
+                    Q{index + 1}: {answer.question}
+                </p>
+                <p className="text-blue-500 font-semibold mt-1 barlow-condensed-regular">
+                    <span className="barlow-condensed-medium">Your Answer:</span> {answer.selectedOption}
+                </p>
+                </motion.div>
+            ))}
+            </Slider>
+         </div>
         <motion.button
            onClick={() => {
             sessionStorage.setItem("quizAnswers", JSON.stringify([]));
