@@ -70,7 +70,7 @@ const ResultsPage = () => {
         className="bg-white p-8 rounded-lg shadow-lg max-w-xl w-full text-center"
       >
         <h1 className="text-3xl font-bold text-gray-800 mb-3 bebas-neue-regular">Your Quiz Results</h1>
-        <p className="text-xl font-medium mb-4 text-gray-800 barlow-condensed-regular-italic mb-6">"{personalityType}"</p>
+        <p className="text-xl font-medium mb-4 text-gray-800 barlow-condensed-regular-italic mb-6">{personalityType}</p>
         <div className="mb-6 question-container">
             <Slider {...settings}>
             {results.map((answer, index) => (
