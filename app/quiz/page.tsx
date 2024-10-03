@@ -21,6 +21,8 @@ const QuizPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentColor, setCurrentColor] = useState({ from: '#bfdbfe', to: '#d8b4fe' });
   const [dragOpacity, setDragOpacity] = useState({ agree: 0, disagree: 0 });
+  const [answers, setAnswers] = useState<string[]>([]); 
+
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +31,7 @@ const QuizPage = () => {
     const threshold = cardWidth * 0.5;
 
     if (Math.abs(info.offset.x) > threshold) {
-      handleOptionClick("Swiped");
+      handleOptionClick(info.offset.x > 0 ? "Agree" : "Disagree");
     } else {
       setCurrentColor({ from: '#bfdbfe', to: '#d8b4fe' });
       setDragOpacity({ agree: 0, disagree: 0 });
@@ -46,11 +48,15 @@ const QuizPage = () => {
     } else {
       setDragOpacity({ agree: opacity, disagree: 0 });
       setCurrentColor({ to: 'rgba(34, 197, 94, .4)', from: `rgba(34, 197, 94, ${opacity})` });
-
     }
   };
 
   const handleOptionClick = (answer: string) => {
+    const updatedAnswers = [...answers, answer]; 
+    setAnswers(updatedAnswers); 
+
+    sessionStorage.setItem("quizAnswers", JSON.stringify(updatedAnswers));
+
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
@@ -59,7 +65,6 @@ const QuizPage = () => {
     setCurrentColor({ from: '#bfdbfe', to: '#d8b4fe' });
     setDragOpacity({ agree: 0, disagree: 0 });
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center p-6 overflow-hidden relative bg-gradient-to-r from-blue-200 to-purple-300">
       <motion.div
