@@ -3,26 +3,13 @@
 import React, { useState, useRef } from "react";
 import { motion, PanInfo } from "framer-motion";
 import { useRouter } from "next/navigation";
-
-const questions = [
-  { question: "You enjoy being the center of attention in social gatherings." },
-  { question: "You prefer deep conversations over small talk." },
-  { question: "You feel comfortable taking risks and exploring the unknown." },
-  { question: "You like to make detailed plans before starting a project." },
-  { question: "You often think about the long-term consequences before making decisions." },
-  { question: "You are quick to make decisions without overanalyzing." },
-  { question: "You find it easy to empathize with other people's emotions." },
-  { question: "You prefer working alone over collaborating with a group." },
-  { question: "You are more of a creative person than a practical person." },
-  { question: "You thrive in situations where you need to be adaptable and flexible." }
-];
+import { questions } from './../data/questions'; 
 
 const QuizPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentColor, setCurrentColor] = useState({ from: '#bfdbfe', to: '#d8b4fe' });
   const [dragOpacity, setDragOpacity] = useState({ agree: 0, disagree: 0 });
-  const [answers, setAnswers] = useState<string[]>([]); 
-
+  const [answers, setAnswers] = useState<{ question: string; value: string }[]>([]);
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +31,6 @@ const QuizPage = () => {
     if (info.offset.x > 0) {
       setDragOpacity({ agree: 0, disagree: opacity });
       setCurrentColor({ to: `rgba(239, 68, 68, ${opacity})`, from: 'rgba(239, 68, 68, .4)' });
-
     } else {
       setDragOpacity({ agree: opacity, disagree: 0 });
       setCurrentColor({ to: 'rgba(34, 197, 94, .4)', from: `rgba(34, 197, 94, ${opacity})` });
@@ -52,9 +38,11 @@ const QuizPage = () => {
   };
 
   const handleOptionClick = (answer: string) => {
-    const updatedAnswers = [...answers, answer]; 
-    setAnswers(updatedAnswers); 
-
+    const updatedAnswers = [
+      ...answers,
+      { question: questions[currentQuestionIndex].question, value: answer }
+    ];
+    setAnswers(updatedAnswers);
     sessionStorage.setItem("quizAnswers", JSON.stringify(updatedAnswers));
 
     if (currentQuestionIndex < questions.length - 1) {
@@ -65,6 +53,7 @@ const QuizPage = () => {
     setCurrentColor({ from: '#bfdbfe', to: '#d8b4fe' });
     setDragOpacity({ agree: 0, disagree: 0 });
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-6 overflow-hidden relative bg-gradient-to-r from-blue-200 to-purple-300">
       <motion.div
@@ -75,7 +64,7 @@ const QuizPage = () => {
       />
 
       <motion.div
-        className="absolute bebas-neue-regular left-16 text-green-600 text-9xl z-0 transform "
+        className="absolute bebas-neue-regular left-16 text-green-600 text-9xl z-0 transform"
         style={{
           opacity: dragOpacity.agree,
           textShadow: "-3px 3px 10px rgba(0, 0, 0, 0.5)"
