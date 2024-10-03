@@ -2,13 +2,13 @@
 
 import React from "react";
 
-const HomePage = () => {
+const QuizPage = () => {
    
   return (
     <div>
-        <p>Home page</p>
+        <p>Quiz page</p>
     </div>
   );
 };
 
-export default HomePage;
+export default QuizPage;
