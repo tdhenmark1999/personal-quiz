@@ -2,6 +2,7 @@ type QuestionType = {
   question: string;
   images: string[];
   solution: string;
+  hint: string; 
 };
 
 export const questions: QuestionType[] = [
@@ -13,7 +14,8 @@ export const questions: QuestionType[] = [
       "https://cdn.photographylife.com/wp-content/uploads/2014/09/Nikon-D750-Image-Samples-2.jpg",
       "https://kbob.github.io/images/sample-5.jpg"
     ],
-    solution: "word1"
+    solution: "word1",
+    hint: "This is the hint for word1.",
   },
   {
     question: "Some question text",
@@ -23,7 +25,8 @@ export const questions: QuestionType[] = [
       "https://kbob.github.io/images/sample-5.jpg",
       "https://cdn.photographylife.com/wp-content/uploads/2014/06/Nikon-D810-Image-Sample-6.jpg"
     ],
-    solution: "word2"
+    solution: "word2",
+    hint: "This is the hint for word2.", 
   },
   {
     question: "Some question text",
@@ -33,6 +36,7 @@ export const questions: QuestionType[] = [
       "https://kbob.github.io/images/sample-5.jpg",
       "https://kbob.github.io/images/sample-5.jpg"
     ],
-    solution: "word3"
+    solution: "word3",
+    hint: "This is the hint for word3.", 
   }
 ];

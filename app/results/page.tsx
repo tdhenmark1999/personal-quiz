@@ -3,94 +3,59 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { questions } from './../data/questions'; 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
 
 type Result = {
-  question: string;
-  selectedOption: string;
+  answer: string;
+  isCorrect: boolean;
 };
 
 const ResultsPage = () => {
   const [results, setResults] = useState<Result[]>([]);
-  const [personalityType, setPersonalityType] = useState<string>('');
+  const [characterDescription, setCharacterDescription] = useState<string>('');
+  const [characterIcon, setCharacterIcon] = useState<string>('');
   const router = useRouter();
 
   useEffect(() => {
     const savedAnswers = JSON.parse(sessionStorage.getItem("quizAnswers") || "[]");
 
     if (Array.isArray(savedAnswers)) {
-      const resultsWithQuestions = savedAnswers.map((item, index) => ({
-        question: questions[index].question,
-        selectedOption: item.value
-      }));
-
-      setResults(resultsWithQuestions);
-      analyzeResults(resultsWithQuestions);
+      setResults(savedAnswers);
+      analyzeResults(savedAnswers);
     }
   }, []);
 
   const analyzeResults = (answers: Result[]) => {
-    const agreeCount = answers.filter(answer => answer.selectedOption === "Agree").length;
-    const disagreeCount = answers.filter(answer => answer.selectedOption === "Disagree").length;
-  
-    if (agreeCount > disagreeCount) {
-      if (agreeCount > 7) {
-        setPersonalityType("You are highly extroverted and thrive in social situations. You enjoy engaging with others and often take the lead in group activities.");
-      } else {
-        setPersonalityType("You tend to be social and outgoing. You thrive in social situations and enjoy engaging with others.");
-      }
+    const correctCount = answers.filter(answer => answer.isCorrect).length;
+
+    if (correctCount === 5) {
+      setCharacterDescription("You're a Master Word Solver! You guessed all the words correctly and have an eye for details.");
+      setCharacterIcon("🧩"); 
+    } else if (correctCount >= 3) {
+      setCharacterDescription("Great job! You're a Word Enthusiast, guessing most of the words correctly. Keep practicing to become a master!");
+      setCharacterIcon("📚"); 
     } else {
-      if (disagreeCount > 7) {
-        setPersonalityType("You are highly introverted and prefer solitary activities. You value deep thought and often take your time to make decisions.");
-      } else {
-        setPersonalityType("You prefer introspection and careful planning. You may enjoy solitary activities and value thoughtful decision-making.");
-      }
+      setCharacterDescription("Keep trying! You're a Word Explorer, and with more practice, you'll improve your word-solving skills.");
+      setCharacterIcon("🕵️"); 
     }
   };
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-200 to-purple-300 p-6">
+    <div className="min-h-screen flex items-center justify-center p-6 overflow-hidden relative"
+         style={{
+           background: `linear-gradient(135deg, rgb(24, 24, 27) 90%, hsl(0, 100%, 64%) 20%)`
+         }}>
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="bg-white p-8 rounded-lg shadow-lg max-w-xl w-full text-center"
       >
-        <h1 className="text-3xl font-bold text-gray-800 mb-3 bebas-neue-regular">Your Quiz Results</h1>
-        <p className="text-xl font-medium mb-4 text-gray-800 barlow-condensed-regular-italic mb-6">{personalityType}</p>
-        <div className="mb-6 question-container">
-            <Slider {...settings}>
-            {results.map((answer, index) => (
-                <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="bg-gray-100 rounded-md p-4 text-gray-800 text-left shadow-sm"
-                >
-                <p className="barlow-condensed-medium">
-                    Q{index + 1}: {answer.question}
-                </p>
-                <p className="text-blue-500 font-semibold mt-1 barlow-condensed-regular">
-                    <span className="barlow-condensed-medium">Your Answer:</span> {answer.selectedOption}
-                </p>
-                </motion.div>
-            ))}
-            </Slider>
-         </div>
+        <h1 className="text-4xl font-bold text-gray-800 mb-3 bebas-neue-regular">Your 4 Pics 1 Word Results</h1>
+        <div className="text-6xl mb-4">{characterIcon}</div>
+        <p className="text-xl font-medium mb-6 text-gray-800 barlow-condensed-regular-italic">{characterDescription}</p>
+        <p className="text-lg text-gray-700 font-semibold mb-6">
+          You answered {results.filter(result => result.isCorrect).length} out of {results.length} correctly.
+        </p>
         <motion.button
            onClick={() => {
             sessionStorage.setItem("quizAnswers", JSON.stringify([]));
