@@ -27,39 +27,6 @@ const QuizPage = () => {
   const currentQuestion = questions[currentQuestionIndex];
   const { solution, hint } = currentQuestion;
 
-  useEffect(() => {
-    const shuffled = shuffleArray(currentQuestion.images);
-    setShuffledImages(shuffled);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentQuestionIndex]);
-
-  useEffect(() => {
-    sessionStorage.setItem("quizAnswers", JSON.stringify([]));
-  }, []);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-
-    if (timerActive) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-    }
-
-    if (timeLeft <= 0) {
-      clearInterval(timer!);
-      storeAnswer(false);
-      goToNext();
-    }
-
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeLeft, timerActive]);
-
   const fastShuffle = () => {
     let shuffleCount = 0;
     const interval = setInterval(() => {
@@ -124,12 +91,45 @@ const QuizPage = () => {
     setHintUsed(true);
   };
 
+  useEffect(() => {
+    const shuffled = shuffleArray(currentQuestion.images);
+    setShuffledImages(shuffled);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuestionIndex]);
+
+  useEffect(() => {
+    sessionStorage.setItem("quizAnswers", JSON.stringify([]));
+  }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (timerActive) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    }
+
+    if (timeLeft <= 0) {
+      clearInterval(timer!);
+      storeAnswer(false);
+      goToNext();
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft, timerActive]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden relative"
+      className="min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden relative"
       style={{
         background: `linear-gradient(135deg, rgb(24, 24, 27) 90%, hsl(0, 100%, 64%) 20%)`,
       }}
@@ -155,9 +155,8 @@ const QuizPage = () => {
               key={index}
               src={image}
               alt={`Puzzle Image ${index + 1}`}
-              className="w-full h-72 object-cover rounded-lg shadow-lg" 
+              className="w-64 h-[250px] object-cover rounded-lg shadow-lg mx-auto my-auto" 
               style={{
-                height: '300px', 
                 boxShadow: "0px 15px 25px rgba(0, 0, 0, 0.2)"
               }}
               initial={{ opacity: 0, scale: 0.8 }}

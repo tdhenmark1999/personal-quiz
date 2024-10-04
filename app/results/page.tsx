@@ -15,15 +15,6 @@ const ResultsPage = () => {
   const [characterIcon, setCharacterIcon] = useState<string>('');
   const router = useRouter();
 
-  useEffect(() => {
-    const savedAnswers = JSON.parse(sessionStorage.getItem("quizAnswers") || "[]");
-
-    if (Array.isArray(savedAnswers)) {
-      setResults(savedAnswers);
-      analyzeResults(savedAnswers);
-    }
-  }, []);
-
   const analyzeResults = (answers: Result[]) => {
     const correctCount = answers.filter(answer => answer.isCorrect).length;
 
@@ -39,6 +30,15 @@ const ResultsPage = () => {
     }
     
   };
+
+  useEffect(() => {
+    const savedAnswers = JSON.parse(sessionStorage.getItem("quizAnswers") || "[]");
+
+    if (Array.isArray(savedAnswers)) {
+      setResults(savedAnswers);
+      analyzeResults(savedAnswers);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 overflow-hidden relative"
