@@ -59,15 +59,19 @@ const QuizPage = () => {
   const fastShuffle = () => {
     let shuffleCount = 0;
     const interval = setInterval(() => {
-      setShuffledImages((prevImages) => shuffleArray([...prevImages]));
+      const allImages = questions.reduce<string[]>((acc, q) => acc.concat(q.images), []);
+      const shuffledSubset = shuffleArray([...allImages]).slice(0, 4); 
+      setShuffledImages(shuffledSubset);
+      
       shuffleCount++;
       if (shuffleCount >= 15) {
         clearInterval(interval);
+        setShuffledImages(shuffleArray(currentQuestion.images)); 
         setTimerActive(true);
       }
-    }, 200);
+    }, 100);
   };
-
+  
   const handleOptionClick = (guess: string) => {
     const isCorrect = guess.toLowerCase() === solution.toLowerCase();
 
@@ -126,12 +130,12 @@ const QuizPage = () => {
         background: `linear-gradient(135deg, rgb(24, 24, 27) 90%, hsl(0, 100%, 64%) 20%)`,
       }}
     >
-      <div className="relative w-full max-w-xl h-full flex flex-col items-center z-10">
+      <div className="relative w-full max-w-xl h-full flex flex-col items-center z-10 h-762">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="text-white text-xl font-bold mb-4"
+          className="text-white text-xl font-bold mb-4 absolute -top-8"
         >
           Time Left: {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
         </motion.div>
@@ -147,8 +151,11 @@ const QuizPage = () => {
               key={index}
               src={image}
               alt={`Puzzle Image ${index + 1}`}
-              className="w-full h-full object-cover rounded-lg shadow-lg"
-              style={{ boxShadow: "0px 15px 25px rgba(0, 0, 0, 0.2)" }}
+              className="w-full h-72 object-cover rounded-lg shadow-lg" 
+              style={{
+                height: '300px', 
+                boxShadow: "0px 15px 25px rgba(0, 0, 0, 0.2)"
+              }}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: index * 0.1 }}
@@ -157,6 +164,7 @@ const QuizPage = () => {
           ))}
         </motion.div>
 
+
         {!solved && (
           <>
             <motion.input
@@ -164,8 +172,8 @@ const QuizPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
               type="text"
-              placeholder="Guess the word"
-              className="mt-6 px-4 py-2 rounded-lg border focus:outline-none shadow-md text-black"
+              placeholder="Guess the word (Press Enter)"
+              className="mt-6 px-4 py-2 rounded-lg border focus:outline-none shadow-md text-black w-43 lowercase"
               style={{
                 borderColor: "hsl(0, 100%, 64%)",
                 color: "rgb(24, 24, 27)",
@@ -183,7 +191,7 @@ const QuizPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.7 }}
               onClick={handleHintClick}
-              disabled={hintUsed || timeLeft <= 30} // Disable hint if already used or time is below 30 seconds
+              disabled={hintUsed || timeLeft <= 30}
               className={`mt-4 px-4 py-2 rounded-full transition-all ${hintUsed || timeLeft <= 30 ? "bg-primary cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-600 text-white"}`}
             >
               {hintUsed ? hint : "Get a Hint (-30s)"}
@@ -196,7 +204,7 @@ const QuizPage = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="mt-6 font-bold absolute -bottom-10"
+            className="mt-6 font-bold absolute bottom-20"
             style={{ color: "hsl(120, 100%, 40%)" }}
           >
             Correct! Shuffling images...

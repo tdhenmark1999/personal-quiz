@@ -150,3 +150,11 @@ body {
   width: 10px !important;
   height: 10px !important;
 }
+
+.w-43 {
+  width: 43%;
+}
+
+.h-762 {
+  height: 762px;
+}
