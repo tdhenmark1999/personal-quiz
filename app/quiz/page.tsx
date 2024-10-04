@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { questions } from "./../data/questions";
 
 const shuffleArray = (array: string[]): string[] => {
-  let shuffledArray = [...array];
+  const shuffledArray = [...array];
   for (let i = shuffledArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
@@ -30,6 +30,8 @@ const QuizPage = () => {
   useEffect(() => {
     const shuffled = shuffleArray(currentQuestion.images);
     setShuffledImages(shuffled);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestionIndex]);
 
   useEffect(() => {
@@ -54,6 +56,8 @@ const QuizPage = () => {
     return () => {
       if (timer) clearInterval(timer);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft, timerActive]);
 
   const fastShuffle = () => {
